@@ -1,0 +1,22 @@
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,Arial,sans-serif;background:#070b14;color:#f5f7fb;line-height:1.6}
+a{text-decoration:none;color:inherit}
+.navbar{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 7%;border-bottom:1px solid #182031;background:#070b14eF;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}
+.logo{font-size:22px;font-weight:800;letter-spacing:-.6px}.logo span{color:#58a6ff;margin-left:4px}
+nav{display:flex;gap:28px;color:#aeb8c9;font-size:14px}nav a:hover{color:#fff}
+.nav-btn,.btn{border-radius:9px;padding:11px 18px;font-weight:700;font-size:14px}.nav-btn{background:#fff;color:#07101e}
+.hero{min-height:650px;padding:90px 7%;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:50px;background:radial-gradient(circle at 80% 40%,#12315b55,transparent 35%)}
+.eyebrow{color:#58a6ff;font-size:12px;letter-spacing:2px;font-weight:800;margin-bottom:14px}
+h1{font-size:clamp(48px,7vw,82px);line-height:1.02;letter-spacing:-3px;margin-bottom:25px}h1 span{color:#58a6ff}
+.hero-text{max-width:620px;color:#aeb8c9;font-size:18px;margin-bottom:30px}
+.buttons{display:flex;gap:12px;flex-wrap:wrap}.btn.primary{background:#58a6ff;color:#06101e}.btn.secondary{border:1px solid #334155;color:#e5eaf2}
+.hero-card{display:flex;justify-content:center}.mini-card{width:300px;padding:35px;border:1px solid #27344a;border-radius:24px;background:linear-gradient(145deg,#111a2b,#0b101b);box-shadow:0 30px 90px #0008;position:relative;overflow:hidden}.card-glow{position:absolute;width:220px;height:220px;background:#2788ff33;filter:blur(60px);border-radius:50%}
+.mini-icon{width:60px;height:60px;border-radius:15px;display:grid;place-items:center;background:#58a6ff;color:#07101e;font-size:30px;font-weight:900;margin-bottom:45px}.mini-card h3{font-size:22px}.mini-card p{color:#8e9aae}.line{height:9px;background:#27344a;border-radius:10px;margin-top:35px}.line.short{width:65%;margin-top:12px}
+.section{padding:95px 7%;border-top:1px solid #141c2a}.section-heading{max-width:700px;margin-bottom:45px}.section-heading h2,.about h2{font-size:44px;line-height:1.1;letter-spacing:-1.5px;margin-bottom:12px}.section-heading>p:last-child,.about p{color:#9da9bb}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.service{padding:28px;border:1px solid #202b3d;border-radius:16px;background:#0b111d;transition:.2s}.service:hover{transform:translateY(-4px);border-color:#3b82c4}.icon{color:#58a6ff;font-weight:800;font-size:12px;margin-bottom:35px}.service h3{margin-bottom:8px}.service p{color:#8f9caf;font-size:14px}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:80px;background:#0a0f19}.about p{margin-bottom:18px}
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.portfolio-item{min-height:230px;padding:25px;display:flex;flex-direction:column;justify-content:end;border-radius:16px;border:1px solid #263247;background:linear-gradient(145deg,#111a2a,#0a0f18)}.portfolio-item span{font-size:12px;color:#58a6ff;text-transform:uppercase;letter-spacing:1.5px}.portfolio-item h3{font-size:20px}
+.contact{background:radial-gradient(circle at 50% 0,#12315b33,transparent 45%)}.contact-box{display:grid;grid-template-columns:1fr 1fr;gap:18px}.contact-box a{padding:25px;border:1px solid #27344a;border-radius:14px;background:#0b111d;display:flex;flex-direction:column}.contact-box strong{font-size:17px;margin-bottom:5px}.contact-box span{color:#8f9caf}
+footer{padding:35px 7%;border-top:1px solid #182031;display:flex;justify-content:space-between;align-items:center;color:#7f8a9d;font-size:13px}
+@media(max-width:800px){.navbar{padding:0 5%}nav{display:none}.nav-btn{padding:9px 12px}.hero{grid-template-columns:1fr;padding:70px 5%;min-height:auto}.hero-card{display:none}.section{padding:70px 5%}.services-grid,.portfolio-grid,.contact-box,.about{grid-template-columns:1fr}.about{gap:30px}.section-heading h2,.about h2{font-size:36px}footer{padding:30px 5%;display:block}footer p{margin-top:10px}}
