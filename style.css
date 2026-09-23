@@ -1,7 +1,164 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-:root{--primary:#a30b22;--dark:#1a1a1a;--light:#fff;--gray:#f8f9fa;--accent:#ff2e4d}
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}body{background:var(--light);color:var(--dark);line-height:1.6;overflow-x:hidden}a{text-decoration:none;transition:.3s}
-nav{background:#fffffff7;padding:1rem 10%;display:flex;justify-content:space-between;align-items:center;position:fixed;width:100%;top:0;z-index:1000;box-shadow:0 2px 15px #0000001a}.logo{font-size:1.6rem;font-weight:800;color:var(--primary)}nav ul{display:flex;list-style:none}nav li{margin-left:2rem}nav li a{color:var(--dark);font-weight:600}nav li a:hover{color:var(--primary)}
-.hero{height:80vh;background:linear-gradient(#000b,#000b),url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1350&q=80') center/cover;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:white;padding:80px 20px 0}.hero h1{font-size:4rem;margin-bottom:10px;text-transform:uppercase}.hero p{font-size:1.4rem;max-width:700px;margin-bottom:30px}.btn{display:inline-block;padding:15px 45px;background:var(--primary);color:white;border-radius:5px;font-weight:bold;border:0;cursor:pointer}.btn:hover{background:var(--accent);transform:scale(1.05)}
-section{padding:80px 10%}.section-title{text-align:center;font-size:2.5rem;margin-bottom:50px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px}.card{background:var(--gray);padding:40px;border-radius:10px;text-align:center;transition:.3s;border-top:4px solid var(--primary)}.card:hover{transform:translateY(-10px);background:#fff;box-shadow:0 10px 30px #0000001a}.card i{font-size:3rem;color:var(--primary);margin-bottom:20px}.contact-form{max-width:600px;margin:auto}input,textarea{width:100%;padding:15px;margin-bottom:15px;border:1px solid #ddd;border-radius:5px}footer{background:var(--dark);color:#fff;padding:40px 10%;text-align:center}.socials a{color:#fff;font-size:1.5rem;margin:0 10px}
-@media(max-width:700px){nav{padding:1rem 5%}.logo{font-size:1.25rem}nav li{margin-left:.8rem}nav li a{font-size:.85rem}.hero h1{font-size:2.6rem}.hero p{font-size:1.1rem}section{padding:60px 6%}}
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Outfit:wght@200;400;900&display=swap');
+
+:root {
+    --primary: #A30B22; /* Your Logo Red */
+    --neon-red: #ff002b;
+    --bg-dark: #020202;
+    --card-glass: rgba(15, 15, 15, 0.7);
+    --border-glow: rgba(163, 11, 34, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+    cursor: default;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: #fff;
+    overflow-x: hidden;
+    /* Animated Grid Background */
+    background-image: 
+        linear-gradient(rgba(163, 11, 34, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(163, 11, 34, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+
+/* Futuristic HUD Navbar */
+nav {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    max-width: 1000px;
+    background: var(--card-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glow);
+    padding: 15px 30px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10000;
+}
+
+.logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    color: #fff;
+}
+
+nav ul { display: flex; list-style: none; gap: 40px; }
+nav ul li a { 
+    text-decoration: none; 
+    color: #aaa; 
+    font-size: 0.8rem; 
+    text-transform: uppercase; 
+    letter-spacing: 2px;
+    transition: 0.3s;
+}
+nav ul li a:hover { color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 10%;
+}
+
+.hero h1 {
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.9;
+    font-family: 'Space Grotesk', sans-serif;
+    background: linear-gradient(to bottom, #fff, #444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    letter-spacing: 4px;
+    color: var(--neon-red);
+    text-transform: uppercase;
+}
+
+/* Glass Bento Cards */
+section { padding: 100px 10%; }
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 200px;
+    gap: 20px;
+}
+
+.bento-card {
+    background: var(--card-glass);
+    border: 1px solid var(--border-glow);
+    border-radius: 30px;
+    padding: 30px;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.bento-card:hover {
+    border-color: var(--neon-red);
+    box-shadow: 0 0 40px rgba(163, 11, 34, 0.2);
+    transform: translateY(-10px);
+}
+
+.bento-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: #fff; }
+.bento-card p { color: #888; font-size: 0.9rem; }
+
+/* Large highlights */
+.wide { grid-column: span 2; }
+.tall { grid-row: span 2; }
+
+/* Contact Input Glow */
+input, textarea {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border-glow);
+    padding: 20px;
+    border-radius: 15px;
+    color: white;
+    margin-bottom: 20px;
+    outline: none;
+}
+input:focus { border-color: var(--neon-red); box-shadow: 0 0 15px var(--border-glow); }
+
+/* Neon Button */
+.btn-neon {
+    padding: 20px 50px;
+    background: transparent;
+    border: 1px solid var(--neon-red);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 900;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+    box-shadow: 0 0 20px rgba(163, 11, 34, 0.4);
+}
+.btn-neon:hover { background: var(--neon-red); box-shadow: 0 0 50px var(--neon-red); color: #000; }
+
+@media (max-width: 900px) {
+    .grid-container { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .wide { grid-column: span 1; }
+    nav ul { display: none; }
+}
