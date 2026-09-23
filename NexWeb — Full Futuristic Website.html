@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NexWeb — Digital Excellence</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@200;300;400;600;900&display=swap');
+
+:root {
+  --red: #A30B22;
+  --red-hot: #FF002B;
+  --bg: #020202;
+  --bg2: #060606;
+  --glass: rgba(12,12,12,0.75);
+  --border: rgba(163,11,34,0.25);
+  --border-bright: rgba(255,0,43,0.6);
+  --white: #ffffff;
+  --grey: #666;
+  --grey-light: #999;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--red-hot);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+  transition: transform 0.15s ease, width 0.2s, height 0.2s;
+  transform: translate(-50%,-50%);
+}
+#cursor-ring {
+  position: fixed;
+  width: 40px; height: 40px;
+  border: 1px solid rgba(255,0,43,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%,-50%);
+  transition: transform 0.08s linear, width 0.25s, height 0.25s, border-color 0.25s;
+}
+body:has(a:hover) #cursor, body:has(button:hover) #cursor { width: 6px; height: 6px; }
+body:has(a:hover) #cursor-ring, body:has(button:hover) #cursor-ring {
+  width: 60px; height: 60px; border-color: var(--red-hot);
+}
+
+/* ── NOISE OVERLAY ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9000;
+  opacity: 0.35;
+}
+
+/* ── GRID BACKGROUND ── */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(163,11,34,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(163,11,34,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+.grid-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(163,11,34,0.08) 0%, transparent 70%);
+}
+
+/* ── LOADER ── */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 99990;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  transition: opacity 0.6s ease 0.2s, visibility 0.6s ease 0.2s;
+}
+#loader.done { opacity: 0; visibility: hidden; }
+.loader-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 6px;
+  color: var(--white);
+}
+.loader-bar-wrap {
+  width: 200px; height: 2px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.loader-bar {
+  height: 100%;
+  background: var(--red-hot);
+  width: 0%;
+  box-shadow: 0 0 12px var(--red-hot);
+  animation: loadBar 1.4s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+@keyframes loadBar { to { width: 100%; } }
+.loader-status {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--grey);
+  font-family: 'Space Grotesk', monospace;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90%, 1000px);
+  background: rgba(5,5,5,0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border);
+  padding: 14px 28px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 9999;
+  transition: border-color 0.3s;
+}
+nav:hover { border-color: var(--border-bright); }
+.nav-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 4px;
+}
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  font-size: 0.7rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--grey-light);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #00ff88;
+  box-shadow: 0 0 8px #00ff88, 0 0 20px rgba(0,255,136,0.4);
+  animation: pulse-dot 2.5s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { box-shadow: 0 0 6px #00ff88, 0 0 16px rgba(0,255,136,0.3); }
+  50% { box-shadow: 0 0 10px #00ff88, 0 0 30px rgba(0,255,136,0.6); }
+}
+
+/* ── HERO ── */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 8% 60px;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.hero-eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 5px;
+  color: var(--red-hot);
+  text-transform: uppercase;
+  font-family: 'Space Grotesk', sans-serif;
+  opacity: 0;
+  animation: fadeSlideDown 0.8s ease 1.6s forwards;
+  margin-bottom: 28px;
+}
+
+.hero-h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(4rem, 11vw, 9.5rem);
+  line-height: 0.88;
+  letter-spacing: -2px;
+  opacity: 0;
+  animation: heroReveal 1.2s cubic-bezier(0.16,1,0.3,1) 1.8s forwards;
+}
+.hero-h1 .line1 { display: block; color: var(--white); }
+.hero-h1 .line2 {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+  position: relative;
+}
+.hero-h1 .line2 .filled {
+  color: var(--red-hot);
+  -webkit-text-stroke: 0;
+  text-shadow: 0 0 60px rgba(255,0,43,0.5), 0 0 120px rgba(255,0,43,0.2);
+}
+
+.hero-sub {
+  margin-top: 40px;
+  max-width: 480px;
+  font-size: 1rem;
+  color: var(--grey-light);
+  line-height: 1.7;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeSlideUp 0.9s ease 2.4s forwards;
+}
+
+.hero-cta-row {
+  margin-top: 48px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  opacity: 0;
+  animation: fadeSlideUp 0.9s ease 2.7s forwards;
+}
+
+.btn-primary {
+  padding: 16px 40px;
+  background: var(--red);
+  border: none;
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: none;
+  transition: background 0.25s, box-shadow 0.25s, transform 0.2s;
+}
+.btn-primary:hover {
+  background: var(--red-hot);
+  box-shadow: 0 0 40px rgba(255,0,43,0.5);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  padding: 16px 40px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--grey-light);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: none;
+  transition: border-color 0.25s, color 0.25s;
+}
+.btn-ghost:hover { border-color: var(--white); color: var(--white); }
+
+/* scan line on hero */
+.scan-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,0,43,0.4), transparent);
+  animation: scan 8s linear infinite;
+  pointer-events: none;
+}
+@keyframes scan {
+  0% { top: -2px; opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeSlideUp 1s ease 3.2s forwards;
+}
+.scroll-line {
+  width: 1px; height: 50px;
+  background: linear-gradient(to bottom, var(--red-hot), transparent);
+  animation: scrollDrop 2s ease-in-out 3.2s infinite;
+}
+@keyframes scrollDrop {
+  0%,100% { transform: scaleY(1); opacity:1; }
+  50% { transform: scaleY(0.5); opacity: 0.4; }
+}
+.scroll-label {
+  font-size: 0.55rem;
+  letter-spacing: 4px;
+  color: var(--grey);
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+}
+
+/* ── MARQUEE STRIP ── */
+.marquee-strip {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  padding: 18px 0;
+  background: rgba(163,11,34,0.03);
+}
+.marquee-inner {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+}
+.marquee-item {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding: 0 40px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.marquee-item::after {
+  content: '✦';
+  color: var(--red);
+  font-size: 0.5rem;
+}
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── SECTIONS COMMON ── */
+section {
+  position: relative;
+  z-index: 1;
+}
+
+.section-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 4px;
+  color: var(--red-hot);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.section-heading {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+/* ── SERVICES ── */
+#services {
+  padding: 120px 8%;
+}
+
+.services-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.services-intro {
+  max-width: 340px;
+  color: var(--grey-light);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+}
+
+.s-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275), box-shadow 0.3s;
+  cursor: none;
+}
+.s-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,0,43,0.07) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.s-card:hover::before { opacity: 1; }
+.s-card:hover {
+  border-color: rgba(255,0,43,0.4);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,0,43,0.1);
+  transform: translateY(-6px);
+}
+.s-card.featured {
+  grid-column: span 2;
+  grid-row: span 1;
+  background: linear-gradient(135deg, rgba(163,11,34,0.12) 0%, rgba(12,12,12,0.9) 50%);
+  border-color: rgba(163,11,34,0.3);
+}
+.s-card.tall { grid-row: span 2; }
+
+.s-num {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: var(--red);
+  margin-bottom: 20px;
+}
+.s-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--white);
+}
+.s-card.featured .s-title { font-size: 2rem; font-weight: 700; line-height: 1.1; }
+.s-desc { font-size: 0.88rem; color: var(--grey-light); line-height: 1.65; font-weight: 300; }
+.s-card.featured .s-desc { font-size: 1rem; max-width: 420px; margin-top: 16px; }
+
+.s-tag-row {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-top: 24px;
+}
+.s-tag {
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  font-family: 'Space Grotesk', sans-serif;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--grey-light);
+  padding: 6px 14px;
+  border-radius: 100px;
+}
+
+.s-arrow {
+  position: absolute;
+  bottom: 28px; right: 28px;
+  width: 36px; height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--grey);
+  font-size: 0.9rem;
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+.s-card:hover .s-arrow { border-color: var(--red-hot); color: var(--white); background: var(--red); }
+
+/* ── STATS ROW ── */
+.stats-row {
+  padding: 80px 8%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--border);
+}
+.stat-cell {
+  background: var(--bg);
+  padding: 48px 32px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.stat-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+}
+.stat-num span { color: var(--red-hot); }
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--grey);
+  letter-spacing: 1.5px;
+}
+
+/* ── FOUNDER / ABOUT ── */
+#about {
+  padding: 120px 8%;
+}
+.about-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.about-visual {
+  position: relative;
+  aspect-ratio: 3/4;
+  max-height: 520px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(163,11,34,0.15), rgba(5,5,5,0.9));
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.about-visual-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(163,11,34,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(163,11,34,0.08) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+.about-initial {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 9rem;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(163,11,34,0.25);
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+  user-select: none;
+}
+.about-badge {
+  position: absolute;
+  bottom: 28px; left: 28px;
+  background: rgba(10,10,10,0.9);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  backdrop-filter: blur(20px);
+}
+.about-badge-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--white);
+}
+.about-badge-role {
+  font-size: 0.7rem;
+  color: var(--red-hot);
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.about-content {}
+.about-content p {
+  font-size: 1rem;
+  color: var(--grey-light);
+  line-height: 1.8;
+  font-weight: 300;
+  margin-top: 24px;
+}
+.about-skills-row {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-top: 36px;
+}
+.skill-pill {
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  font-family: 'Space Grotesk', sans-serif;
+  border: 1px solid var(--border);
+  color: var(--grey-light);
+  padding: 8px 18px;
+  border-radius: 100px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.skill-pill:hover { border-color: var(--red-hot); color: var(--white); }
+
+/* ── PROCESS ── */
+#process {
+  padding: 120px 8%;
+  background: rgba(5,5,5,0.5);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin-top: 60px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--border);
+}
+.process-cell {
+  background: var(--bg);
+  padding: 40px 28px;
+  position: relative;
+  transition: background 0.3s;
+}
+.process-cell:hover { background: rgba(163,11,34,0.06); }
+.process-step-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: rgba(163,11,34,0.15);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+.process-cell:hover .process-step-num { color: var(--red); }
+.process-step-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.process-step-desc {
+  font-size: 0.85rem;
+  color: var(--grey);
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+/* ── CONTACT ── */
+#contact {
+  padding: 120px 8%;
+}
+.contact-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.contact-info p {
+  font-size: 1rem;
+  color: var(--grey-light);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-top: 24px;
+  max-width: 380px;
+}
+.contact-detail {
+  margin-top: 48px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.c-detail-item {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.c-detail-label {
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: var(--grey);
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+}
+.c-detail-value {
+  font-size: 0.95rem;
+  color: var(--white);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+}
+
+.contact-form-wrap {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 40px;
+}
+.form-row { margin-bottom: 18px; }
+.form-label {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: var(--grey);
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.form-input, .form-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  color: var(--white);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  resize: none;
+}
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(163,11,34,0.12);
+}
+.form-textarea { height: 130px; }
+.form-submit {
+  width: 100%;
+  padding: 18px;
+  background: var(--red);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: none;
+  transition: background 0.25s, box-shadow 0.25s, transform 0.2s;
+  margin-top: 8px;
+}
+.form-submit:hover {
+  background: var(--red-hot);
+  box-shadow: 0 0 40px rgba(255,0,43,0.4);
+  transform: translateY(-2px);
+}
+
+/* ── FOOTER ── */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 48px 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 4px;
+}
+.footer-copy {
+  font-size: 0.7rem;
+  color: var(--grey);
+  letter-spacing: 2px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.footer-links { display: flex; gap: 28px; }
+.footer-links a {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--white); }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes heroReveal {
+  from { opacity: 0; transform: scale(0.92) translateY(20px); filter: blur(12px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .service-grid { grid-template-columns: 1fr; }
+  .s-card.featured, .s-card.tall { grid-column: span 1; grid-row: span 1; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .about-inner, .contact-inner { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 540px) {
+  .stats-row { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: 1fr; }
+  .hero-cta-row { flex-direction: column; }
+  .hero-h1 { font-size: clamp(3rem, 13vw, 5rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Grid BG -->
+<div class="grid-bg"></div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-logo">NEXWEB</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="loader-status" id="loader-status">Initializing systems...</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">NEXWEB</div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-dot"></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="scan-line"></div>
+  <p class="hero-eyebrow">System Active // Established 2024</p>
+  <h1 class="hero-h1">
+    <span class="line1">DIGITAL</span>
+    <span class="line2"><span class="filled">EXCEL</span>LENCE</span>
+  </h1>
+  <p class="hero-sub">We build digital ecosystems — scalable, fast, and visually superior. Not just websites; the infrastructure behind your brand.</p>
+  <div class="hero-cta-row">
+    <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Start a Project</button>
+    <button class="btn-ghost" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">View Services</button>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span class="scroll-label">Scroll</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner" id="marquee-inner">
+    <div class="marquee-item">Web Architecture</div>
+    <div class="marquee-item">SEO Dominance</div>
+    <div class="marquee-item">Brand Identity</div>
+    <div class="marquee-item">E-Commerce</div>
+    <div class="marquee-item">Speed Optimization</div>
+    <div class="marquee-item">Local SEO</div>
+    <div class="marquee-item">WordPress</div>
+    <div class="marquee-item">Logo Design</div>
+    <div class="marquee-item">Web Architecture</div>
+    <div class="marquee-item">SEO Dominance</div>
+    <div class="marquee-item">Brand Identity</div>
+    <div class="marquee-item">E-Commerce</div>
+    <div class="marquee-item">Speed Optimization</div>
+    <div class="marquee-item">Local SEO</div>
+    <div class="marquee-item">WordPress</div>
+    <div class="marquee-item">Logo Design</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <div>
+      <p class="section-tag">Capabilities</p>
+      <h2 class="section-heading">Service<br>Modules</h2>
+    </div>
+    <p class="services-intro">Every engagement starts with understanding your growth vector. We then deploy the right stack of services to get you there.</p>
+  </div>
+
+  <div class="service-grid">
+    <div class="s-card featured reveal reveal-delay-1" data-tilt>
+      <div class="s-num">01</div>
+      <div class="s-title">Web Architecture & Development</div>
+      <div class="s-desc">Next-generation builds using modern frameworks for high-speed performance, airtight security, and long-term scalability. Every pixel deliberate.</div>
+      <div class="s-tag-row">
+        <span class="s-tag">React</span>
+        <span class="s-tag">Next.js</span>
+        <span class="s-tag">WordPress</span>
+        <span class="s-tag">E-Commerce</span>
+      </div>
+      <div class="s-arrow">↗</div>
+    </div>
+    <div class="s-card tall reveal reveal-delay-2" data-tilt>
+      <div class="s-num">02</div>
+      <div class="s-title">SEO Engine</div>
+      <div class="s-desc">Aggressive search dominance — technical SEO, local maps, content velocity — to put your brand where decisions are made.</div>
+      <div class="s-tag-row">
+        <span class="s-tag">Technical SEO</span>
+        <span class="s-tag">GMB Setup</span>
+      </div>
+      <div class="s-arrow">↗</div>
+    </div>
+    <div class="s-card reveal reveal-delay-3" data-tilt>
+      <div class="s-num">03</div>
+      <div class="s-title">Brand Identity</div>
+      <div class="s-desc">Visual ID and identity systems designed to hold up across every channel, from favicon to billboard.</div>
+      <div class="s-arrow">↗</div>
+    </div>
+    <div class="s-card reveal reveal-delay-4" data-tilt>
+      <div class="s-num">04</div>
+      <div class="s-title">Speed Optimization</div>
+      <div class="s-desc">Core Web Vitals tuning and cloud infrastructure setup so your site loads faster than the competition.</div>
+      <div class="s-arrow">↗</div>
+    </div>
+    <div class="s-card reveal reveal-delay-2" data-tilt>
+      <div class="s-num">05</div>
+      <div class="s-title">Social Systems</div>
+      <div class="s-desc">Content design and management strategy that drives real human engagement — not just impressions.</div>
+      <div class="s-arrow">↗</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-cell reveal">
+    <div class="stat-num"><span class="count-up" data-target="40">0</span><span>+</span></div>
+    <div class="stat-label">Projects Delivered</div>
+  </div>
+  <div class="stat-cell reveal reveal-delay-1">
+    <div class="stat-num"><span class="count-up" data-target="100">0</span><span>%</span></div>
+    <div class="stat-label">Client Retention</div>
+  </div>
+  <div class="stat-cell reveal reveal-delay-2">
+    <div class="stat-num"><span class="count-up" data-target="98">0</span><span>+</span></div>
+    <div class="stat-label">Avg. PageSpeed Score</div>
+  </div>
+  <div class="stat-cell reveal reveal-delay-3">
+    <div class="stat-num"><span>2024</span></div>
+    <div class="stat-label">Founded</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-visual reveal">
+      <div class="about-visual-bg"></div>
+      <div class="about-initial">KP</div>
+      <div class="about-badge">
+        <div class="about-badge-name">Krutik Patel</div>
+        <div class="about-badge-role">Lead Architect & Founder</div>
+      </div>
+    </div>
+    <div class="about-content reveal reveal-delay-2">
+      <p class="section-tag">The Operator</p>
+      <h2 class="section-heading">Built by someone who<br>thinks in systems.</h2>
+      <p>Krutik Patel founded NexWeb with one conviction: most agencies build websites, few build leverage. Every project at NexWeb is designed from the ground up as a growth asset — something that compounds over time.</p>
+      <p>From architecture decisions to the last line of CSS, every choice is intentional, fast, and built to outlast trends.</p>
+      <div class="about-skills-row">
+        <span class="skill-pill">Web Development</span>
+        <span class="skill-pill">SEO Strategy</span>
+        <span class="skill-pill">Brand Systems</span>
+        <span class="skill-pill">Performance</span>
+        <span class="skill-pill">E-Commerce</span>
+        <span class="skill-pill">WordPress</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="reveal">
+    <p class="section-tag">How We Work</p>
+    <h2 class="section-heading">The Build Process</h2>
+  </div>
+  <div class="process-grid">
+    <div class="process-cell reveal reveal-delay-1">
+      <div class="process-step-num">01</div>
+      <div class="process-step-title">Discovery</div>
+      <div class="process-step-desc">We map your competitive landscape, audience, and growth targets before touching a single design file.</div>
+    </div>
+    <div class="process-cell reveal reveal-delay-2">
+      <div class="process-step-num">02</div>
+      <div class="process-step-title">Architecture</div>
+      <div class="process-step-desc">Tech stack, sitemap, and content structure chosen for your specific load requirements and SEO goals.</div>
+    </div>
+    <div class="process-cell reveal reveal-delay-3">
+      <div class="process-step-num">03</div>
+      <div class="process-step-title">Build & Deploy</div>
+      <div class="process-step-desc">Clean code, optimized assets, and a launch checklist that leaves nothing to chance. Fast the first day and every day after.</div>
+    </div>
+    <div class="process-cell reveal reveal-delay-4">
+      <div class="process-step-num">04</div>
+      <div class="process-step-title">Grow & Iterate</div>
+      <div class="process-step-desc">Post-launch SEO, performance monitoring, and ongoing improvements. The work doesn't stop at launch.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-info reveal">
+      <p class="section-tag">Get In Touch</p>
+      <h2 class="section-heading">Ready to build<br>something real?</h2>
+      <p>Tell us about your project. We'll respond within 24 hours with a clear plan of action — no vague proposals, no wasted calls.</p>
+      <div class="contact-detail">
+        <div class="c-detail-item">
+          <span class="c-detail-label">Email</span>
+          <span class="c-detail-value">nexwebsolutions11@gmail.com</span>
+        </div>
+        <div class="c-detail-item">
+          <span class="c-detail-label">Based In</span>
+          <span class="c-detail-value">India · Remote Worldwide</span>
+        </div>
+        <div class="c-detail-item">
+          <span class="c-detail-label">Response Time</span>
+          <span class="c-detail-value">Within 24 hours</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form-wrap reveal reveal-delay-2">
+      <form action="https://formspree.io/f/nexwebsolutions11@gmail.com" method="POST">
+        <div class="form-row">
+          <label class="form-label" for="name">Your Name</label>
+          <input class="form-input" type="text" id="name" name="name" placeholder="Krutik Patel" required>
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="email">Email Address</label>
+          <input class="form-input" type="email" id="email" name="email" placeholder="you@company.com" required>
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="project">Project Details</label>
+          <textarea class="form-textarea" id="project" name="message" placeholder="Describe what you're building and what you need..."></textarea>
+        </div>
+        <button class="form-submit" type="submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NEXWEB</div>
+  <div class="footer-copy">© 2024 NexWeb Solutions · Krutik Patel · All rights reserved</div>
+  <div class="footer-links">
+    <a href="#hero">Home</a>
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+// ── LOADER ──
+const loaderStatuses = ['Initializing systems...', 'Loading modules...', 'Calibrating interface...', 'System online.'];
+let si = 0;
+const ls = document.getElementById('loader-status');
+const statusInterval = setInterval(() => {
+  si++;
+  if (si < loaderStatuses.length) ls.textContent = loaderStatuses[si];
+}, 380);
+setTimeout(() => {
+  clearInterval(statusInterval);
+  document.getElementById('loader').classList.add('done');
+}, 1700);
+
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let cx = 0, cy = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  cx = e.clientX; cy = e.clientY;
+  cursor.style.left = cx + 'px';
+  cursor.style.top = cy + 'px';
+});
+(function animateRing() {
+  rx += (cx - rx) * 0.12;
+  ry += (cy - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animateRing);
+})();
+
+// ── SCROLL REVEAL ──
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => revealObs.observe(el));
+
+// ── COUNT UP ──
+const countEls = document.querySelectorAll('.count-up');
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = parseInt(el.dataset.target);
+    const duration = 1600;
+    const start = performance.now();
+    (function step(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(eased * target);
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    })(start);
+    countObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+countEls.forEach(el => countObs.observe(el));
+
+// ── CARD TILT ──
+document.querySelectorAll('[data-tilt]').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width;
+    const y = (e.clientY - r.top) / r.height;
+    const rx_ = (y - 0.5) * -8;
+    const ry_ = (x - 0.5) * 8;
+    card.style.transform = `translateY(-6px) perspective(800px) rotateX(${rx_}deg) rotateY(${ry_}deg)`;
+    card.style.setProperty('--mx', (x * 100) + '%');
+    card.style.setProperty('--my', (y * 100) + '%');
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+// ── NAV ACTIVE STATE ──
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+const navObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.style.color = '');
+      const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+      if (active) active.style.color = '#fff';
+    }
+  });
+}, { threshold: 0.5 });
+sections.forEach(s => navObs.observe(s));
+</script>
+</body>
+</html>
