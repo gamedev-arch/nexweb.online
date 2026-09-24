@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://YOUR-DOMAIN.example/</loc></url>
-<url><loc>https://YOUR-DOMAIN.example/about.html</loc></url>
-<url><loc>https://YOUR-DOMAIN.example/services.html</loc></url>
-<url><loc>https://YOUR-DOMAIN.example/portfolio.html</loc></url>
-<url><loc>https://YOUR-DOMAIN.example/pricing.html</loc></url>
-<url><loc>https://YOUR-DOMAIN.example/blog.html</loc></url>
-<url><loc>https://YOUR-DOMAIN.example/contact.html</loc></url>
+<url><loc>https://nexwebsolutions.online/</loc></url>
+<url><loc>https://nexwebsolutions.online/about.html</loc></url>
+<url><loc>https://nexwebsolutions.online/services.html</loc></url>
+<url><loc>https://nexwebsolutions.online/portfolio.html</loc></url>
+<url><loc>https://nexwebsolutions.online/pricing.html</loc></url>
+<url><loc>https://nexwebsolutions.online/blog.html</loc></url>
+<url><loc>https://nexwebsolutions.online/contact.html</loc></url>
 </urlset>
